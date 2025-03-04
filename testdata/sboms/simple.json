@@ -1,0 +1,80 @@
+{
+    "spdxVersion": "SPDX-2.3",
+    "documentNamespace": "http://foo/bar",
+    "creationInfo": {
+        "creators": ["Organization: Some Other Company" ],
+        "created": "2025-04-08T01:25:25Z"
+    },
+    "dataLicense": "some-data-license",
+    "SPDXID": "SPDXRef-DOCUMENT",
+    "name": "SimpleSBOM",
+    "packages": [
+        {
+            "SPDXID": "SPDXRef-Package",
+            "name": "Some Package",
+            "downloadLocation": "https://some.package",
+            "filesAnalyzed": false,
+            "licenseConcluded": "NOASSERTION",
+            "licenseDeclared": "NOASSERTION",
+            "copyrightText": "NOASSERTION",
+            "versionInfo": "v1",
+            "checksums": [
+                {
+                    "algorithm": "SHA256",
+                    "checksumValue": "1062853d2d37dc9d4c391c7b4fd2d49300ddebb4ec261bb1086753041b8dc5ad"
+                }
+            ]
+        },
+        {
+            "SPDXID": "SPDXRef-Package-1",
+            "name": "",
+            "downloadLocation": "NOASSERTION",
+            "filesAnalyzed": false,
+            "licenseConcluded": "some-license",
+            "licenseDeclared": "NOASSERTION",
+            "copyrightText": "NOASSERTION",
+            "versionInfo": "v1"
+        },
+        {
+            "SPDXID": "SPDXRef-Package-2",
+            "name": "another package",
+            "versionInfo": "v2",
+            "downloadLocation": "NOASSERTION",
+            "filesAnalyzed": false,
+            "licenseConcluded": "some-license",
+            "licenseDeclared": "NOASSERTION",
+            "copyrightText": "NOASSERTION"
+        },
+        {
+            "SPDXID": "SPDXRef-Package-3",
+            "name": "last package",
+            "downloadLocation": "NOASSERTION",
+            "filesAnalyzed": false,
+            "licenseConcluded": "some license",
+            "licenseDeclared": "NOASSERTION",
+            "copyrightText": "NOASSERTION",
+            "versionInfo": "v3"
+        }
+
+    ],
+    "documentDescribes": [
+        "SPDXRef-Package"
+    ],
+    "relationships": [
+        {
+            "spdxElementId": "SPDXRef-Package",
+            "relatedSpdxElement": "SPDXRef-Package-1",
+            "relationshipType": "CONTAINS"
+        },
+        {
+            "spdxElementId": "SPDXRef-Package",
+            "relatedSpdxElement": "SPDXRef-Package-2",
+            "relationshipType": "CONTAINS"
+        },
+        {
+            "spdxElementId": "SPDXRef-Package",
+            "relatedSpdxElement": "SPDXRef-Package-3",
+            "relationshipType": "CONTAINS"
+        }
+    ]
+}
