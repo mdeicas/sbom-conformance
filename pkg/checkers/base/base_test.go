@@ -56,14 +56,23 @@ func TestDeduplicatePackageResults(t *testing.T) {
 		t.Fatalf("There should only be 1 error. Found %d", len(deduplicated[0].Errors))
 	}
 	if len(deduplicated[0].Errors[0].ReportedBySpec) != 1 {
-		t.Fatalf("There should only be 1 spec. Found %d", len(deduplicated[0].Errors[0].ReportedBySpec))
+		t.Fatalf(
+			"There should only be 1 spec. Found %d",
+			len(deduplicated[0].Errors[0].ReportedBySpec),
+		)
 	}
 	if deduplicated[0].Errors[0].ReportedBySpec[0] != "Google" {
-		t.Errorf("The spec should be 'Google' but is '%s'", deduplicated[0].Errors[0].ReportedBySpec[0])
+		t.Errorf(
+			"The spec should be 'Google' but is '%s'",
+			deduplicated[0].Errors[0].ReportedBySpec[0],
+		)
 	}
 }
 
-func simpleError(reportedBySpec []string, errorType, errorMsg, checkName string) *types.NonConformantField {
+func simpleError(
+	reportedBySpec []string,
+	errorType, errorMsg, checkName string,
+) *types.NonConformantField {
 	return &types.NonConformantField{
 		ReportedBySpec: reportedBySpec,
 		Error: &types.FieldError{
@@ -185,7 +194,10 @@ func CompareTwoPkgResults(t *testing.T, got, expected *types.PkgResult) bool {
 			return false
 		}
 		for j := range got.Errors[i].ReportedBySpec {
-			if !strings.EqualFold(got.Errors[i].ReportedBySpec[j], expected.Errors[i].ReportedBySpec[j]) {
+			if !strings.EqualFold(
+				got.Errors[i].ReportedBySpec[j],
+				expected.Errors[i].ReportedBySpec[j],
+			) {
 				t.Logf("error %d spec %d is not correct. got=%s and expected=%s\n",
 					i, j, got.Errors[i].ReportedBySpec[j], expected.Errors[j].ReportedBySpec[j])
 				return false
@@ -235,7 +247,11 @@ func TestEOChecker(t *testing.T) {
 
 	checksInRun := checker.GetAllChecks()
 	if len(checksInRun) != len(expectedCheckNames) {
-		t.Fatalf("This spec should have %d checks but had %d", len(expectedCheckNames), len(checksInRun))
+		t.Fatalf(
+			"This spec should have %d checks but had %d",
+			len(expectedCheckNames),
+			len(checksInRun),
+		)
 	}
 
 	for _, checkInRun := range checksInRun {
@@ -256,7 +272,11 @@ Conformance issues in packages:
 
 	results := checker.Results()
 	if !strings.EqualFold(expectedTextSummary, results.TextSummary) {
-		t.Errorf("The text summary was not as expected. \nWas:\n'%s'\nExpected:\n'%s'\n", results.TextSummary, expectedTextSummary)
+		t.Errorf(
+			"The text summary was not as expected. \nWas:\n'%s'\nExpected:\n'%s'\n",
+			results.TextSummary,
+			expectedTextSummary,
+		)
 	}
 
 	if results.Summary.TotalSBOMPackages != 4 {
@@ -285,8 +305,10 @@ Conformance issues in packages:
 			results.Summary.SpecSummaries["EO"].TotalChecks)
 	}
 	if len(results.PkgResults) != results.Summary.FailedSBOMPackages {
-		t.Errorf("len(results.PkgResults) should be the same as results.Summary.FailedSBOMPackages but was %d\n",
-			len(results.PkgResults))
+		t.Errorf(
+			"len(results.PkgResults) should be the same as results.Summary.FailedSBOMPackages but was %d\n",
+			len(results.PkgResults),
+		)
 	}
 
 	// First package findings
@@ -337,7 +359,10 @@ Conformance issues in packages:
 	// Third package findings
 	packageName = results.PkgResults[2].Package.Name
 	if results.PkgResults[2].Package.Name != "another package" {
-		t.Errorf("The third package should be named 'another package' but was named '%s'", packageName)
+		t.Errorf(
+			"The third package should be named 'another package' but was named '%s'",
+			packageName,
+		)
 	}
 	if len(results.PkgResults[2].Errors) != 1 {
 		t.Error("There should be two errors")
@@ -355,7 +380,10 @@ Conformance issues in packages:
 	// Fourth package findings
 	packageName = results.PkgResults[3].Package.Name
 	if results.PkgResults[3].Package.Name != "last package" {
-		t.Errorf("The fourth package should be named 'last package' but was named '%s'", packageName)
+		t.Errorf(
+			"The fourth package should be named 'last package' but was named '%s'",
+			packageName,
+		)
 	}
 	if len(results.PkgResults[2].Errors) != 1 {
 		t.Error("There should be two errors")
@@ -372,7 +400,10 @@ Conformance issues in packages:
 
 	// Check results.Errs.AndPacks
 	if len(results.ErrsAndPacks) != 2 {
-		t.Errorf("The length of results.ErrsAndPacks should be 2 but is %d", len(results.ErrsAndPacks))
+		t.Errorf(
+			"The length of results.ErrsAndPacks should be 2 but is %d",
+			len(results.ErrsAndPacks),
+		)
 	}
 	expect := []string{
 		"Some Package",
@@ -381,7 +412,11 @@ Conformance issues in packages:
 		"last package",
 	}
 	if !slices.Equal(results.ErrsAndPacks["has no PackageExternalReferences field"], expect) {
-		t.Errorf("Expected %+v but got %+v", expect, results.ErrsAndPacks["has no PackageExternalReferences field"])
+		t.Errorf(
+			"Expected %+v but got %+v",
+			expect,
+			results.ErrsAndPacks["has no PackageExternalReferences field"],
+		)
 	}
 	/*expect = []string{"Package-1"}
 	if !slices.Equal(results.ErrsAndPacks["has no PackageName field"], expect) {
@@ -429,7 +464,11 @@ func TestGoogleChecker(t *testing.T) {
 
 	checksInRun := checker.GetAllChecks()
 	if len(checksInRun) != len(expectedCheckNames) {
-		t.Fatalf("This spec should have %d checks but had %d", len(expectedCheckNames), len(checksInRun))
+		t.Fatalf(
+			"This spec should have %d checks but had %d",
+			len(expectedCheckNames),
+			len(checksInRun),
+		)
 	}
 
 	for _, checkInRun := range checksInRun {
@@ -452,7 +491,11 @@ Conformance issues in packages:
 
 	results := checker.Results()
 	if !strings.EqualFold(expectedTextSummary, results.TextSummary) {
-		t.Errorf("The text summary was not as expected. \nWas:\n'%s'\nExpected:\n'%s'\n", results.TextSummary, expectedTextSummary)
+		t.Errorf(
+			"The text summary was not as expected. \nWas:\n'%s'\nExpected:\n'%s'\n",
+			results.TextSummary,
+			expectedTextSummary,
+		)
 	}
 
 	if results.Summary.TotalSBOMPackages != 4 {
@@ -481,8 +524,10 @@ Conformance issues in packages:
 			results.Summary.SpecSummaries["Google"].TotalChecks)
 	}
 	if len(results.PkgResults) != results.Summary.FailedSBOMPackages {
-		t.Errorf("len(results.PkgResults) should be the same as results.Summary.FailedSBOMPackages but was %d\n",
-			len(results.PkgResults))
+		t.Errorf(
+			"len(results.PkgResults) should be the same as results.Summary.FailedSBOMPackages but was %d\n",
+			len(results.PkgResults),
+		)
 	}
 
 	// First package findings
@@ -503,7 +548,9 @@ Conformance issues in packages:
 		t.Errorf("Should be missingField ErrorType")
 	}
 	if results.PkgResults[0].Errors[1].Error.ErrorMsg != "has neither Concluded License nor License From Files. Both of these cannot be absent from a package." {
-		t.Errorf("Should be 'has neither Concluded License nor License From Files. Both of these cannot be absent from a package.' ErrorMsg")
+		t.Errorf(
+			"Should be 'has neither Concluded License nor License From Files. Both of these cannot be absent from a package.' ErrorMsg",
+		)
 	}
 	if !slices.Equal(results.PkgResults[0].Errors[0].ReportedBySpec, []string{"Google"}) {
 		t.Errorf("The issue should be reported by Google")
@@ -542,7 +589,10 @@ Conformance issues in packages:
 	// Third package findings
 	packageName = results.PkgResults[2].Package.Name
 	if results.PkgResults[2].Package.Name != "another package" {
-		t.Errorf("The second package should be named 'another package' but was named '%s'", packageName)
+		t.Errorf(
+			"The second package should be named 'another package' but was named '%s'",
+			packageName,
+		)
 	}
 	if len(results.PkgResults[2].Errors) != 1 {
 		t.Error("There should only be one error")
@@ -560,7 +610,10 @@ Conformance issues in packages:
 	// Fourth package findings
 	packageName = results.PkgResults[3].Package.Name
 	if results.PkgResults[3].Package.Name != "last package" {
-		t.Errorf("The fourth package should be named 'last package' but was named '%s'", packageName)
+		t.Errorf(
+			"The fourth package should be named 'last package' but was named '%s'",
+			packageName,
+		)
 	}
 	if len(results.PkgResults[3].Errors) != 1 {
 		t.Error("There should only be one error")
@@ -577,7 +630,10 @@ Conformance issues in packages:
 
 	// Check results.Errs.AndPacks
 	if len(results.ErrsAndPacks) != 3 {
-		t.Errorf("The length of results.ErrsAndPacks should be 3 but is %d", len(results.ErrsAndPacks))
+		t.Errorf(
+			"The length of results.ErrsAndPacks should be 3 but is %d",
+			len(results.ErrsAndPacks),
+		)
 	}
 	expect := []string{
 		"Some Package",
@@ -637,7 +693,11 @@ func TestSPDXChecker(t *testing.T) {
 
 	checksInRun := checker.GetAllChecks()
 	if len(checksInRun) != len(expectedCheckNames) {
-		t.Fatalf("This spec should have %d checks but had %d", len(expectedCheckNames), len(checksInRun))
+		t.Fatalf(
+			"This spec should have %d checks but had %d",
+			len(expectedCheckNames),
+			len(checksInRun),
+		)
 	}
 
 	for _, checkInRun := range checksInRun {
@@ -658,7 +718,11 @@ Conformance issues in packages:
 
 	results := checker.Results()
 	if !strings.EqualFold(expectedTextSummary, results.TextSummary) {
-		t.Errorf("The text summary was not as expected. \nWas:\n'%s'\nExpected:\n'%s'\n", results.TextSummary, expectedTextSummary)
+		t.Errorf(
+			"The text summary was not as expected. \nWas:\n'%s'\nExpected:\n'%s'\n",
+			results.TextSummary,
+			expectedTextSummary,
+		)
 	}
 
 	if results.Summary.TotalSBOMPackages != 4 {
@@ -697,7 +761,10 @@ Conformance issues in packages:
 		t.Errorf("The first package should be named 'Some Package' but was named '%s'", packageName)
 	}
 	if len(results.PkgResults[0].Errors) != 0 {
-		t.Errorf("There should be no SBOM issues but there are %d\n", len(results.PkgResults[0].Errors))
+		t.Errorf(
+			"There should be no SBOM issues but there are %d\n",
+			len(results.PkgResults[0].Errors),
+		)
 	}
 
 	// Second package findings
@@ -706,19 +773,28 @@ Conformance issues in packages:
 		t.Errorf("The first package should be named '' but was named '%s'", packageName)
 	}
 	if len(results.PkgResults[1].Errors) != 2 {
-		t.Errorf("There should be two SBOM issues but there are %d\n", len(results.PkgResults[1].Errors))
+		t.Errorf(
+			"There should be two SBOM issues but there are %d\n",
+			len(results.PkgResults[1].Errors),
+		)
 	}
 	if results.PkgResults[1].Errors[0].Error.ErrorType != "missingField" {
 		t.Errorf("Should be missingField ErrorType")
 	}
 	if results.PkgResults[1].Errors[0].Error.ErrorMsg != "has no PackageName field" {
-		t.Errorf("Should be 'has no PackageName field' ErrorMsg but was %s\n", results.PkgResults[1].Errors[0].Error.ErrorMsg)
+		t.Errorf(
+			"Should be 'has no PackageName field' ErrorMsg but was %s\n",
+			results.PkgResults[1].Errors[0].Error.ErrorMsg,
+		)
 	}
 	if results.PkgResults[1].Errors[1].Error.ErrorType != "missingField" {
 		t.Errorf("Should be missingField ErrorType")
 	}
 	if results.PkgResults[1].Errors[1].Error.ErrorMsg != "has no PackageDownloadLocation field" {
-		t.Errorf("Should be 'has no PackageDownloadLocation field' ErrorMsg but was %s\n", results.PkgResults[1].Errors[1].Error.ErrorMsg)
+		t.Errorf(
+			"Should be 'has no PackageDownloadLocation field' ErrorMsg but was %s\n",
+			results.PkgResults[1].Errors[1].Error.ErrorMsg,
+		)
 	}
 	if !slices.Equal(results.PkgResults[1].Errors[0].ReportedBySpec, []string{"SPDX"}) {
 		t.Errorf("The issue should be reported by SPDX")
@@ -730,16 +806,25 @@ Conformance issues in packages:
 	// Third package findings
 	packageName = results.PkgResults[2].Package.Name
 	if results.PkgResults[2].Package.Name != "another package" {
-		t.Errorf("The second package should be named 'another package' but was named '%s'", packageName)
+		t.Errorf(
+			"The second package should be named 'another package' but was named '%s'",
+			packageName,
+		)
 	}
 	if len(results.PkgResults[2].Errors) != 1 {
-		t.Errorf("There should be one SBOM issues but there are %d\n", len(results.PkgResults[2].Errors))
+		t.Errorf(
+			"There should be one SBOM issues but there are %d\n",
+			len(results.PkgResults[2].Errors),
+		)
 	}
 	if results.PkgResults[2].Errors[0].Error.ErrorType != "missingField" {
 		t.Errorf("Should be missingField ErrorType")
 	}
 	if results.PkgResults[2].Errors[0].Error.ErrorMsg != "has no PackageDownloadLocation field" {
-		t.Errorf("Should be 'has no PackageDownloadLocation field' ErrorMsg but was %s\n", results.PkgResults[2].Errors[0].Error.ErrorMsg)
+		t.Errorf(
+			"Should be 'has no PackageDownloadLocation field' ErrorMsg but was %s\n",
+			results.PkgResults[2].Errors[0].Error.ErrorMsg,
+		)
 	}
 	if !slices.Equal(results.PkgResults[2].Errors[0].ReportedBySpec, []string{"SPDX"}) {
 		t.Errorf("The issue should be reported by SPDX")
@@ -748,16 +833,25 @@ Conformance issues in packages:
 	// Fourth package findings
 	packageName = results.PkgResults[3].Package.Name
 	if results.PkgResults[3].Package.Name != "last package" {
-		t.Errorf("The fourth package should be named 'last package' but was named '%s'", packageName)
+		t.Errorf(
+			"The fourth package should be named 'last package' but was named '%s'",
+			packageName,
+		)
 	}
 	if len(results.PkgResults[3].Errors) != 1 {
-		t.Errorf("There should be one SBOM issues but there are %d\n", len(results.PkgResults[3].Errors))
+		t.Errorf(
+			"There should be one SBOM issues but there are %d\n",
+			len(results.PkgResults[3].Errors),
+		)
 	}
 	if results.PkgResults[3].Errors[0].Error.ErrorType != "missingField" {
 		t.Errorf("Should be missingField ErrorType")
 	}
 	if results.PkgResults[3].Errors[0].Error.ErrorMsg != "has no PackageDownloadLocation field" {
-		t.Errorf("Should be 'has no PackageDownloadLocation field' ErrorMsg but was %s\n", results.PkgResults[3].Errors[0].Error.ErrorMsg)
+		t.Errorf(
+			"Should be 'has no PackageDownloadLocation field' ErrorMsg but was %s\n",
+			results.PkgResults[3].Errors[0].Error.ErrorMsg,
+		)
 	}
 	if !slices.Equal(results.PkgResults[3].Errors[0].ReportedBySpec, []string{"SPDX"}) {
 		t.Errorf("The issue should be reported by SPDX")
