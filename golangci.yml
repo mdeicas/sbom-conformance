@@ -35,8 +35,8 @@ issues:
         - gocyclo
         - lll
         - wrapcheck
-  # probes must register via init
-    - path: 'probes/.+/impl.go'
+    # probes must register via init
+    - path: "probes/.+/impl.go"
       linters:
         - gochecknoinits
 skip-files:
