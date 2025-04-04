@@ -32,7 +32,7 @@ With a `BaseChecker`, we can now run all top-level checks and package-level chec
 
 checker.RunChecks()
 
-``` 
+```
 
 After that, you can get information about the SBOM and its conformance.
 
@@ -89,6 +89,7 @@ results.ChecksInRun
 sbom-conformance is currently mainly intended to be used as a library. We have a `main.go` that is in WIP. It may not support all features in sbom-conformance, but if you wish to use sbom-conformance as a standalone CLI tool, we accept pull requests for our `mail.go` file.
 
 ## Disclaimer
+
 This is not an officially supported Google product. This project is not
 eligible for the [Google Open Source Software Vulnerability Rewards
 Program](https://bughunters.google.com/open-source-security).
