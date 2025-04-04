@@ -211,10 +211,10 @@ func main() {
 					conformant = fmt.Sprintf("NOT conformant %s", redCross)
 				}
 				specsSummary.WriteString(fmt.Sprintf("%s: %d/%d checks passed | %s\n",
-													specName,
-													cir.PassedChecks,
-													cir.TotalChecks,
-													conformant))
+					specName,
+					cir.PassedChecks,
+					cir.TotalChecks,
+					conformant))
 			}
 		} else {
 			for _, chosenSpec := range specsForSummary {
@@ -227,10 +227,10 @@ func main() {
 							conformant = fmt.Sprintf("NOT conformant %s", redCross)
 						}
 						specsSummary.WriteString(fmt.Sprintf("%s: %d/%d checks passed | %s\n",
-															specName,
-															cir.PassedChecks,
-															cir.TotalChecks,
-															conformant))
+							specName,
+							cir.PassedChecks,
+							cir.TotalChecks,
+							conformant))
 					}
 				}
 			}
