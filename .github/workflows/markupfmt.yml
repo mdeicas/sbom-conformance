@@ -1,0 +1,32 @@
+name: Markup format
+
+on:
+  push:
+    branches: ["main"]
+    paths: ["**/*.md", "**/*.yml", "**/*.yaml"]
+  pull_request:
+    branches: ["main"]
+    paths: ["**/*.md", "**/*.yml", "**/*.yaml"]
+
+permissions: {}
+
+jobs:
+  prettier:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          persist-credentials: false
+
+      - name: Set up Node.js
+        uses: actions/setup-node@v4
+        with:
+          node-version: "18"
+
+      - name: Install
+        run: npm ci --save-dev
+
+      - name: Check formatting
+        run: |
+          npx prettier --version
+          npx prettier --check --no-error-on-unmatched-pattern **/*.md **/*.yml **/*.yaml
