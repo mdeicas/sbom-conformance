@@ -11,9 +11,7 @@
 # WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
 # See the License for the specific language governing permissions and
 # limitations under the License.
-
 name: Markup format
-
 on:
   push:
     branches: ["main"]
@@ -21,22 +19,31 @@ on:
   pull_request:
     branches: ["main"]
     paths: ["**/*.md", "**/*.yml", "**/*.yaml"]
-
 permissions: {}
-
 jobs:
+  yaml:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          persist-credentials: false
+      - name: Set up Go
+        uses: actions/setup-go@0aaccfd150d50ccaeb58ebd88d36e91967a5f35b # tag=v5.4.0
+        with:
+          go-version: '1.23'
+      - name: Format yaml
+        run: go run github.com/google/yamlfmt/cmd/yamlfmt@928ce33e9afa338486d889549fc78e6b7feabeaf --dry . #tag=v0.16.0
+      - name: Check if files changed
+        run: git diff --exit-code
   markdown:
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v4
         with:
           persist-credentials: false
-
       - name: Set up Go
         uses: actions/setup-go@0aaccfd150d50ccaeb58ebd88d36e91967a5f35b # tag=v5.4.0
         with:
-          go-version-file: "go.mod"
-
+          go-version: '1.23'
       - name: Check Markdown Formatting
         run: go run github.com/Kunde21/markdownfmt/v3/cmd/markdownfmt@e8fe4577b9bd844cf3bc3b10af16ffdb2ff30195 #tag=v3.1.0
-
