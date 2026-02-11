@@ -24,8 +24,8 @@ import (
 	"strings"
 
 	"github.com/google/sbom-conformance/pkg/checkers/base"
-	"github.com/google/sbom-conformance/pkg/checkers/types"
 	"github.com/google/sbom-conformance/pkg/util"
+	"github.com/google/sbom-conformance/registry"
 )
 
 //nolint:all
@@ -46,12 +46,20 @@ var (
 		"List the packages that failed checks",
 	)
 	flagGetChecks    = flag.Bool("get-checks", false, "Print the checks in the analysis")
-	validSpecs       = []string{strings.ToLower(types.Google), strings.ToLower(types.EO), strings.ToLower(types.SPDX), "all"}
+	validSpecs       = mapKeys()
 	greenCheckHex, _ = strconv.ParseInt("0x00002705", 0, 32)
 	greenCheck       = html.UnescapeString(fmt.Sprint(rune(greenCheckHex)))
 	redCrossHex, _   = strconv.ParseInt("0x0000274C", 0, 32)
 	redCross         = html.UnescapeString(fmt.Sprint(rune(redCrossHex)))
 )
+
+func mapKeys() []string {
+	var specs []string
+	for spec := range registry.GetRegistry() {
+		specs = append(specs, spec)
+	}
+	return specs
+}
 
 //nolint:all
 func main() {

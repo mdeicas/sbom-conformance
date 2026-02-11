@@ -18,6 +18,7 @@ import (
 	"github.com/google/sbom-conformance/pkg/checkers/common"
 	types "github.com/google/sbom-conformance/pkg/checkers/types"
 	"github.com/google/sbom-conformance/pkg/util"
+	"github.com/google/sbom-conformance/registry"
 	v23 "github.com/spdx/tools-golang/spdx/v2/v2_3"
 )
 
@@ -135,4 +136,8 @@ func (eoChecker *EOChecker) SpecName() string {
 // Checks the SBOMs package fields.
 func (eoChecker *EOChecker) CheckPackages(doc *v23.Document) {
 	eoChecker.PkgResults = util.RunPkgLevelChecks(doc, eoChecker.PkgLevelChecks, eoChecker.Name)
+}
+
+func init() {
+	register.AddSpec
 }
